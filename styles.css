@@ -1,0 +1,59 @@
+body {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  background: #fff8dc;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+header {
+  background: #ffcb05;
+  border-bottom: 4px solid #000;
+  text-align: center;
+  padding: 1rem;
+}
+nav a {
+  margin: 0 10px;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+}
+.hero-img {
+  width: 60%;
+  margin: 10px auto;
+  display: block;
+  border: 5px solid #000;
+  box-shadow: 5px 5px 0 #000;
+}
+.story {
+  border: 3px solid #000;
+  background: #fdf5e6;
+  padding: 1rem;
+  margin: 1rem;
+  box-shadow: 5px 5px 0 #000;
+}
+.story-img {
+  width: 100%;
+  border: 2px solid #000;
+}
+.msg {
+  display: flex;
+  align-items: flex-start;
+  margin: 10px 0;
+  gap: 10px;
+}
+.msg .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  background: #fff;
+}
+.msg .bubble {
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 15px;
+  padding: 8px 12px;
+  max-width: 70%;
+}
+.msg:nth-child(odd) .bubble { background: #fddde6; }
+.msg:nth-child(even) .bubble { background: #d1f7c4; }
