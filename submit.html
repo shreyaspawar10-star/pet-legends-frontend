@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Your Pet Story</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Share Your Pet Legend</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stories.html">Stories</a>
+      <a href="pets.html">Pets</a>
+    </nav>
+  </header>
+  <main>
+    <form id="submitForm">
+      <input type="text" id="title" placeholder="Pet Name" required><br>
+      <textarea id="text" placeholder="Tell your story..." required></textarea><br>
+      <input type="file" id="image" accept="image/*" required><br>
+      <button type="submit">Submit</button>
+    </form>
+  </main>
+  <script>
+    const backendURL = "https://your-backend-url.onrender.com";
+
+    document.getElementById("submitForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("title", document.getElementById("title").value);
+      formData.append("text", document.getElementById("text").value);
+      formData.append("image", document.getElementById("image").files[0]);
+      const res = await fetch(`${backendURL}/api/submit`, {
+        method: "POST",
+        body: formData
+      });
+      if (res.ok) alert("Story submitted successfully!");
+    });
+  </script>
+</body>
+</html>

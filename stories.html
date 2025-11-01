@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Legends - Stories</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Pet Legends Stories</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="pets.html">Pets</a>
+      <a href="submit.html">Submit</a>
+    </nav>
+  </header>
+  <main id="stories"></main>
+  <script>
+    const backendURL = "https://your-backend-url.onrender.com";
+
+    function getAvatar(user) {
+      const avatars = [
+        "https://placekitten.com/40/40",
+        "https://place-puppy.com/40x40",
+        "https://placebear.com/40/40"
+      ];
+      const index = user.charCodeAt(0) % avatars.length;
+      return avatars[index];
+    }
+
+    async function loadStories() {
+      const res = await fetch(`${backendURL}/api/stories`);
+      const stories = await res.json();
+      const container = document.getElementById('stories');
+      container.innerHTML = stories.map(s => `
+        <article class="story">
+          <h2>${s.title}</h2>
+          <img src="${s.image}" alt="${s.title}" class="story-img">
+          <p>${s.text}</p>
+          <div id="messages-${s.id}" class="messages"></div>
+          <input id="user-${s.id}" placeholder="Your name">
+          <input id="msg-${s.id}" placeholder="Write a message">
+          <button onclick="sendMessage('${s.id}')">Send</button>
+        </article>
+      `).join('');
+      stories.forEach(s => loadMessages(s.id));
+    }
+
+    async function loadMessages(storyId) {
+      const res = await fetch(`${backendURL}/api/messages/${storyId}`);
+      const msgs = await res.json();
+      const box = document.getElementById(`messages-${storyId}`);
+      box.innerHTML = msgs.map(m => `
+        <div class="msg">
+          <img src="${getAvatar(m.user)}" class="avatar">
+          <div class="bubble">
+            <b>${m.user}</b><br>${m.text}
+            <small>${m.time}</small>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function sendMessage(storyId) {
+      const user = document.getElementById(`user-${storyId}`).value;
+      const text = document.getElementById(`msg-${storyId}`).value;
+      if (!user || !text) return alert("Enter name and message!");
+      await fetch(`${backendURL}/api/messages/${storyId}`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({user, text})
+      });
+      loadMessages(storyId);
+    }
+
+    loadStories();
+  </script>
+</body>
+</html>
